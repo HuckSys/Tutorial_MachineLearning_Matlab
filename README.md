@@ -3,10 +3,10 @@ A tutorial on machine learning from scratch with Matlab
 
 ## Table of Contents
 
-### [1. Generate Data](https://github.com/terryum/Tutorial_MachineLearning_Matlab/tree/master/1_GenerateData)
+#### [1. Generate Data](https://github.com/terryum/Tutorial_MachineLearning_Matlab/tree/master/1_GenerateData)
 Generate data for experiments 
 
-### [2. Least Square Method (Linear Regression)](https://github.com/terryum/Tutorial_MachineLearning_Matlab/tree/master/2_LeastSquareMethod)
+#### [2. Least Square Method (Linear Regression)](https://github.com/terryum/Tutorial_MachineLearning_Matlab/tree/master/2_LeastSquareMethod)
 Linear regresion in (i) analytic and (ii) numerical approaches
 
 ## Terms of Use
