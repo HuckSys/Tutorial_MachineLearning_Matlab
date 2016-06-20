@@ -39,8 +39,8 @@ function [err_train, err_test, loss] = LeastSquareMethod_ND(x_train, y_train, x_
     X_train = [x_train ones(nTrain,1)]; 
     X_test = [x_test ones(nTest,1)]; 
     
-    [err_train d_loss] = Loss(X_train, X_train*W, y_train, opt_loss);
-    [err_test d_loss] = Loss(X_test, X_test*W, y_test, opt_loss);
+    [err_train d_loss] = Loss(X_train*W, y_train, opt_loss);
+    [err_test d_loss] = Loss(X_test*W, y_test, opt_loss);
     
     % 1-3. Plot the data
     figure();
@@ -69,12 +69,11 @@ function [err_train, err_test, loss] = LeastSquareMethod_ND(x_train, y_train, x_
     W = randn(nDim_In+1, nDim_Out)*0.1;
     X_train = [x_train ones(nTrain,1)]; 
     X_test = [x_test ones(nTest,1)]; 
-    Y_train = y_train;
+    Y_train = y_train;  Y_test = y_test;
     
     % 2-2. Train the weight
     W_log = zeros(nDim_In+1, nDim_Out, nEpoch);
     nIter = floor(nTrain/minibatch);
-    err_log = zeros(nIter*nEpoch,1);
     
     nErrLog = 0;
     for kk = 1:nEpoch
@@ -84,19 +83,22 @@ function [err_train, err_test, loss] = LeastSquareMethod_ND(x_train, y_train, x_
         
         for ii=1:nIter
             nIdx1 = (ii-1)*minibatch+1;         nIdx2 = ii*minibatch;
-            [err d_loss] = Loss(X_train(nIdx1:nIdx2, :), X_train(nIdx1:nIdx2, :)*W, Y_train(nIdx1:nIdx2,:), opt_loss);
-            W = W + stepsize*d_loss;
+%             [err d_loss] = Loss(X_train(nIdx1:nIdx2, :), X_train(nIdx1:nIdx2, :)*W, Y_train(nIdx1:nIdx2,:), opt_loss);
+%             W = W + stepsize*d_loss;
+            [err d_loss] = Loss(X_train(nIdx1:nIdx2, :)*W, Y_train(nIdx1:nIdx2,:), opt_loss);
+            dW = (X_train(nIdx1:nIdx2, :)'*d_loss)/minibatch;
+            W = W - stepsize*dW;
             nErrLog = nErrLog+1;
             
-            [err_log_train(nErrLog,1) d_loss] = Loss(X_train, X_train*W, Y_train, opt_loss);
-            [err_log_test(nErrLog,1) d_loss] = Loss(X_test, X_test*W, y_test, opt_loss);
+            [err_log_train(nErrLog,1) d_loss] = Loss(X_train*W, Y_train, opt_loss);
+            [err_log_test(nErrLog,1) d_loss] = Loss(X_test*W, Y_test, opt_loss);
         end
     end
   
     
     % 2-3. Evaluation (mean square error)
-    [err_train d_loss] = Loss(X_train, X_train*W, Y_train, opt_loss);
-    [err_test d_loss] = Loss(X_test, X_test*W, y_test, opt_loss);
+    [err_train d_loss] = Loss(X_train*W, Y_train, opt_loss);
+    [err_test d_loss] = Loss(X_test*W, Y_test, opt_loss);
     loss = err_train;
 
     % 2-4. Plot the data
