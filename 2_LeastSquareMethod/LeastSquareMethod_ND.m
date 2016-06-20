@@ -83,8 +83,6 @@ function [err_train, err_test, loss] = LeastSquareMethod_ND(x_train, y_train, x_
         
         for ii=1:nIter
             nIdx1 = (ii-1)*minibatch+1;         nIdx2 = ii*minibatch;
-%             [err d_loss] = Loss(X_train(nIdx1:nIdx2, :), X_train(nIdx1:nIdx2, :)*W, Y_train(nIdx1:nIdx2,:), opt_loss);
-%             W = W + stepsize*d_loss;
             [err d_loss] = Loss(X_train(nIdx1:nIdx2, :)*W, Y_train(nIdx1:nIdx2,:), opt_loss);
             dW = (X_train(nIdx1:nIdx2, :)'*d_loss)/minibatch;
             W = W - stepsize*dW;
@@ -94,7 +92,6 @@ function [err_train, err_test, loss] = LeastSquareMethod_ND(x_train, y_train, x_
             [err_log_test(nErrLog,1) d_loss] = Loss(X_test*W, Y_test, opt_loss);
         end
     end
-  
     
     % 2-3. Evaluation (mean square error)
     [err_train d_loss] = Loss(X_train*W, Y_train, opt_loss);
